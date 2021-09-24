@@ -17,7 +17,7 @@ login = {'email': email, 'password': password}
 
 class MyApp():
     def __init__(self) -> None:
-        self.firebase_con = firebase_con.FirebaseConnection(login)
+        self.firebase_con = firebase_con.FirebaseConnection()
 
         self.nDias = 5
         self.nHorarios = 12
@@ -35,7 +35,7 @@ class MyApp():
                 'funcNovoMembro': self.novoMembro
                 }
 
-        self.root = frontend.MyRoot(**kwargs)
+        self.root = frontend.MyRoot(self, **kwargs)
 
         self.btnMtxHorarios = [[0 for x in range(self.nDias)] for y in range(self.nHorarios)]
         self.boolMtxHorarios = [[1 for x in range(self.nDias)] for y in range(self.nHorarios)]
@@ -106,14 +106,14 @@ class MyApp():
             return
 
 
-    def formatarBotao(self,i,j):
+    def formatarBotao(self, i, j):
         if self.boolMtxHorarios[i][j] == 0:
             self.btnMtxHorarios[i][j].config(bg='tomato',text='Ocupado',relief=SUNKEN)
         else:
             self.btnMtxHorarios[i][j].config(bg='pale green',text='Disponível',relief=RAISED)
 
 
-    def alternarBotao(self,i,j):
+    def alternarBotao(self, i, j):
         self.boolMtxHorarios[i][j] = int(not self.boolMtxHorarios[i][j])
         self.formatarBotao(i,j)
         

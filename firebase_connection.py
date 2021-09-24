@@ -18,11 +18,12 @@ class FirebaseConnection():
         'measurementId': "G-86QRW9J99C"
     }
 
-    def __init__(self, login) -> None:
+    def __init__(self) -> None:
         self.firebase_app = pyrebase.initialize_app(self._firebaseConfig)
         self._db = self.firebase_app.database()
         self._auth = self.firebase_app.auth()
-        self._login = self.login(login['email'], login['password'])
+        # self._login = self.login(login['email'], login['password'])
+        self._login = {}
 
         self.my_stream = self._db.child('testebancodedados-56c27').child('Cadastro').stream(self.listener)
 
@@ -35,9 +36,9 @@ class FirebaseConnection():
 
     def signup(self,email,password,phone_number):
         try:
-            user = self._auth.create_user(email = email, password = password, phone_number=phone_number)
-        except:
-            pass
+            user = self._auth.create_user_with_email_and_password(email = email, password = password)
+        except Exception as e:
+            print("Erro ao tentar criar usuário: ",e.args)
 
 
     def login(self,email,password):
