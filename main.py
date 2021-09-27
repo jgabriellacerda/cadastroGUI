@@ -64,6 +64,7 @@ class MyApp():
             new_id = str(self.firebase_con.new_user_id())
             print("New ID: ",new_id)
             data['ID'] = new_id
+            self.root.ID.set(new_id)
             self.firebase_con.new_person(data)
         else:
             new_id = self.sql_db.new_person(data, self.boolMtxHorarios)

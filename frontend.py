@@ -143,9 +143,9 @@ class FrameLogin(Frame):
         lblID = Label(self,text='Usuário:',**self.root.lbl_style,justify=RIGHT).grid(row=1,column=0,sticky=E)
         txtID = Entry(self,textvariable=self.user,font=('arial',30,'bold'),bg="white",fg="gray",justify=LEFT).grid(row=1,column=1,padx=5,sticky=W+E)
         lblID = Label(self,text='Senha:',**self.root.lbl_style,justify=RIGHT).grid(row=2,column=0,sticky=E)
-        txtID = Entry(self,textvariable=self.password,font=('arial',30,'bold'),bg="white",fg="gray",justify=LEFT).grid(row=2,column=1,padx=5,sticky=W+E)
-        lblID = Label(self,text='Celular:',**self.root.lbl_style,justify=RIGHT).grid(row=3,column=0,sticky=E)
-        txtID = Entry(self,textvariable=self.phone,font=('arial',30,'bold'),bg="white",fg="gray",justify=LEFT).grid(row=3,column=1,padx=5,sticky=W+E)
+        txtID = Entry(self,textvariable=self.password,show="*",font=('arial',30,'bold'),bg="white",fg="gray",justify=LEFT).grid(row=2,column=1,padx=5,sticky=W+E)
+        # lblID = Label(self,text='Celular:',**self.root.lbl_style,justify=RIGHT).grid(row=3,column=0,sticky=E)
+        # txtID = Entry(self,textvariable=self.phone,font=('arial',30,'bold'),bg="white",fg="gray",justify=LEFT).grid(row=3,column=1,padx=5,sticky=W+E)
         
         frameBtns = Frame(self, bg = "red", bd=0, relief=RIDGE)
         frameBtns.grid(row=4,column=1,sticky=W)
