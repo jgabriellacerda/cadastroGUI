@@ -8,7 +8,9 @@ from tkinter import messagebox
 import pygame, sys, random
 from PIL import Image, ImageTk
 import firebase_connection as firebase_con
+
 import frontend
+import dataChecker
 
 
 email = 'gabriel.lacerda@engenharia.ufjf.br'
@@ -60,6 +62,18 @@ class MyApp():
             'DataNascimento': self.root.diaNasc.get()+"/"+self.root.mesNasc.get()+"/"+self.root.anoNasc.get(),
             'Cargo': self.root.Cargo.get()
         }
+        if not dataChecker.checkDate(data['DataNascimento']):
+            messagebox.showinfo(self.root.Nome.get(), 'Data de nascimento inválida!')
+            return
+        elif not dataChecker.checkEmail(data['EMail']):
+            messagebox.showinfo(self.root.Nome.get(), 'E-mail inválido!')
+            return
+        elif not dataChecker.checkName(data['Nome']):
+            messagebox.showinfo(self.root.Nome.get(), 'Nome inválido!')
+            return
+        elif not dataChecker.checkCargo(data['Cargo']):
+            messagebox.showinfo(self.root.Nome.get(), 'Cargo inválido!')
+            return
         if self.database_type == 'firebase':
             new_id = str(self.firebase_con.new_user_id())
             print("New ID: ",new_id)
@@ -81,7 +95,7 @@ class MyApp():
                 nasc = dados['DataNascimento']
                 self.root.diaNasc.set(nasc[0]+nasc[1])
                 self.root.mesNasc.set(nasc[3]+nasc[4])
-                self.root.anoNasc.set(nasc[6]+nasc[7]+nasc[8]+nasc[9])        
+                self.root.anoNasc.set(nasc[6]+nasc[7]+nasc[8]+nasc[9])
         else:
             dados = self.sql_db.get_data(self.root.ID.get())
             self.root.Nome.set(dados[1])
@@ -117,7 +131,7 @@ class MyApp():
     def alternarBotao(self, i, j):
         self.boolMtxHorarios[i][j] = int(not self.boolMtxHorarios[i][j])
         self.formatarBotao(i,j)
-        
+
 
     def atualizarDados(self):
         data = {
@@ -132,14 +146,14 @@ class MyApp():
             self.firebase_con.update_data(self.root.ID.get(), data)
         else:
             self.sql_db.update_data(data, self.boolMtxHorarios)
-    
+
 
     def load_logo(self):
         load = Image.open("../logo2.png")
         width, height = load.size
         load = load.resize((round(140/height*width) , round(140)))
         self.logo = ImageTk.PhotoImage(load)
-        img = Label(self.root.frameLogo, image=self.logo, bg='red').grid(row=0, column=0, padx=202, columnspan=2, sticky=W+E)  
+        img = Label(self.root.frameLogo, image=self.logo, bg='red').grid(row=0, column=0, padx=202, columnspan=2, sticky=W+E)
 
     def run(self):
         # self.load_logo()

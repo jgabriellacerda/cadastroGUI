@@ -21,7 +21,7 @@ class MyRoot(Tk):
         self.title("CADASTRO MEMBROS")
         #root.geometry('1352x750+0+0')
         self.resizable(False,False)
-        self.wm_iconbitmap("rinoceronte.ico")
+        #self.wm_iconbitmap("rinoceronte.ico")
         self.configure(background='red')
 
         self.mainFrame = Frame(self, bg = "red", bd=10, relief=RIDGE).grid()
@@ -57,7 +57,7 @@ class MyRoot(Tk):
         self.frameHorario.grid()
         self.frameCadastro.grid_remove()
         self.frameLogin.grid_remove()
-    
+
     def mostrarLogin(self):
         self.frameLogin.grid()
         self.frameCadastro.grid_remove()
@@ -72,7 +72,7 @@ class FrameLogo(Frame):
         width, height = load.size
         load = load.resize((round(140/height*width) , round(140)))
         self.logo = ImageTk.PhotoImage(load)
-        img = Label(self, image=self.logo, bg='red').grid(row=0, column=0, padx=202, columnspan=2, sticky=W+E)  
+        img = Label(self, image=self.logo, bg='red').grid(row=0, column=0, padx=202, columnspan=2, sticky=W+E)
 
 
 
@@ -123,7 +123,7 @@ class FrameCadastro(Frame):
         btnSend = Button(self,text='Atualizar Dados',command=confirmarAtt,**self.root.btn_style).grid(row=5,column=1,padx=5,pady=9,sticky=W)
 
         btnNew = Button(self,text='Cadastrar Novo Membro',command=novoMembro,**self.root.btn_style).grid(row=5,column=2,padx=5,sticky=W)
-        
+
 
 class FrameLogin(Frame):
     def __init__(self, master, root, **kwargs):
@@ -146,7 +146,7 @@ class FrameLogin(Frame):
         txtID = Entry(self,textvariable=self.password,show="*",font=('arial',30,'bold'),bg="white",fg="gray",justify=LEFT).grid(row=2,column=1,padx=5,sticky=W+E)
         # lblID = Label(self,text='Celular:',**self.root.lbl_style,justify=RIGHT).grid(row=3,column=0,sticky=E)
         # txtID = Entry(self,textvariable=self.phone,font=('arial',30,'bold'),bg="white",fg="gray",justify=LEFT).grid(row=3,column=1,padx=5,sticky=W+E)
-        
+
         frameBtns = Frame(self, bg = "red", bd=0, relief=RIDGE)
         frameBtns.grid(row=4,column=1,sticky=W)
         btnSearch = Button(frameBtns,text='Entrar',command=self.entrar,pady=1,**self.root.btn_style,justify=RIGHT).grid(row=0,column=0,padx=5,sticky=W)
@@ -155,7 +155,7 @@ class FrameLogin(Frame):
     def novaConta(self):
         self.root.app.firebase_con.signup(self.user.get(), self.password.get(), self.phone.get())
         print("Nova Conta")
-    
+
     def entrar(self):
         self.root.app.firebase_con.login(self.user.get(), self.password.get())
         print("Entrar")
