@@ -9,7 +9,7 @@ class MyRoot(Tk):
         super().__init__()
 
         self.app = app
-        self.btn_style = {'font': ('arial',18,'bold'), 'bg': "white", 'fg': "gray"}
+        self.btn_style = {'font': ('arial',18,'bold'), 'bg': "white", 'fg': "gray", 'relief':'groove'}
         self.lbl_style = {'font': ('arial',30,'bold'), 'padx': 9, 'pady': 9, 'bg': "red", 'fg': "white"}
 
         self.ID = StringVar()
@@ -29,31 +29,31 @@ class MyRoot(Tk):
         #self.wm_iconbitmap("rinoceronte.ico")
         self.configure(background='red')
 
-        self.mainFrame = Frame(self, bg = "red", bd=10, relief=RIDGE).grid()
+        self.mainFrame = Frame(self, bg = "red", bd=3, relief=RIDGE).grid()
 
-        self.frameLogo = FrameLogo(master=self.mainFrame, bg="red", bd=5, relief=RIDGE)
+        self.frameLogo = FrameLogo(master=self.mainFrame, bg="red", bd=3, relief=RIDGE)
         self.frameLogo.grid(row=0,column=0,sticky=W+E)
 
 
-        self.frameMenu = FrameMenu(self.mainFrame, self, bg = "red", bd=5, relief=RIDGE)
+        self.frameMenu = FrameMenu(self.mainFrame, self, bg = "red", bd=3, relief=RIDGE)
         self.frameMenu.grid(row=1,column=0,sticky=E+W+N+S)
 
-        self.frameCadastro = FrameCadastro(master=self.mainFrame, root=self, bg = "red", bd=5, relief=RIDGE, **kwargs)
+        self.frameCadastro = FrameCadastro(master=self.mainFrame, root=self, bg = "red", bd=3, relief=RIDGE, **kwargs)
         self.frameCadastro.grid(row=2,column=0,sticky=E+W+N+S)
         # self.frameCadastro.grid_remove()
         self.content_list.append(self.frameCadastro)
 
-        self.frameHorario = FrameHorario(self.mainFrame, bg = "red", bd=5, relief=RIDGE)
+        self.frameHorario = FrameHorario(self.mainFrame, bg = "red", bd=3, relief=RIDGE)
         self.frameHorario.grid(row=2,column=0,sticky=E+W+N+S)
         self.frameHorario.grid_remove()
         self.content_list.append(self.frameHorario)
 
-        self.frameLogin = FrameLogin(self.mainFrame, self, bg = "red", bd=5, relief=RIDGE)
+        self.frameLogin = FrameLogin(self.mainFrame, self, bg = "red", bd=3, relief=RIDGE)
         self.frameLogin.grid(row=2,column=0,sticky=E+W+N+S)
         self.frameLogin.grid_remove()
         self.content_list.append(self.frameLogin)
 
-        self.frameRodape = FrameRodape(self.mainFrame, self, bg = "red", bd=5, relief=RIDGE)
+        self.frameRodape = FrameRodape(self.mainFrame, self, bg = "red", bd=3, relief=RIDGE)
         self.frameRodape.grid(row=3,column=0,sticky=W+E)
 
         

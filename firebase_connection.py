@@ -1,6 +1,8 @@
 
 import pyrebase
 import json
+import requests
+
 
 class FirebaseConnection():
     """
@@ -53,14 +55,18 @@ class FirebaseConnection():
 
     def get_data(self,id):
         if 'idToken' in self._login.keys():
-            data = self._db.child('testebancodedados-56c27').child('Cadastro').child(id).get(self._login['idToken'])
-            if data.val():
-                data = dict(data.val())
-                #print(data)
-                return data
-            else:
-                print("ID inexistente.")
-                return None
+            try:
+                data = self._db.child('testebancodedados-56c27').child('Cadastro').child(id).get(self._login['idToken'])
+                if data.val():
+                    data = dict(data.val())
+                    #print(data)
+                    return data
+                else:
+                    print("ID inexistente.")
+                    return None
+            except Exception as e:
+                print("Erro: ",e.args[1])
+
         else:
             print("Não autorizado")
             return {}
@@ -103,7 +109,7 @@ class FirebaseConnection():
         if 'idToken' in self._login.keys():
             data = self._db.child('testebancodedados-56c27').child('Cadastro').child(user_code).child('ID').get(self._login['idToken'])
             data = data.val()
-            print(data)
+            print("Data: ",data)
             return data
         else:
             print("Não autorizado")
@@ -112,6 +118,9 @@ class FirebaseConnection():
 
     def new_person(self, data):
         # data_id = str(int(data['ID'])+1)
-        data_id = data['ID']
-        print("Data: ",data)
-        self._db.child('testebancodedados-56c27').child('Cadastro').child(data_id).set(data,self._login['idToken'])
+        try:
+            data_id = data['ID']
+            print("Data: ",data)
+            self._db.child('testebancodedados-56c27').child('Cadastro').child(data_id).set(data,self._login['idToken'])
+        except Exception as e:
+            print("Erro: ",e.args)
