@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import ttk
 import time
 from PIL import Image, ImageTk
 
@@ -17,6 +18,7 @@ class MyRoot(Tk):
         self.anoNasc = StringVar()
         self.EMail = StringVar()
         self.Cargo = StringVar()
+        #self.Cargo = ttk.combobox(
 
         self.title("CADASTRO MEMBROS")
         #root.geometry('1352x750+0+0')
@@ -117,12 +119,19 @@ class FrameCadastro(Frame):
         lblEMail = Label(self,text='E-mail:',**self.root.lbl_style,justify=RIGHT).grid(row=3,column=0,sticky=E)
         txtEMail = Entry(self,textvariable=root.EMail,font=('arial',30,'bold'),bg="white",fg="gray",justify=LEFT).grid(row=3,column=1,sticky=E+W,padx=5,columnspan=2)
 
+        frameCargo = Frame(self, bg = "red", bd=0, relief=RIDGE)
+        frameCargo.grid(row=4,column=1,sticky=W,columnspan=2)
         lblCargo = Label(self,text='Cargo:',**self.root.lbl_style,justify=RIGHT).grid(row=4,column=0,sticky=E)
-        txtCargo = Entry(self,textvariable=root.Cargo,font=('arial',30,'bold'),bg="white",fg="gray",justify=LEFT).grid(row=4,column=1,sticky=W,padx=5,columnspan=2)
+        cargoOptions = ttk.Combobox(frameCargo, values=['Membro', 'Coordenador', 'Gerente'], textvariable=root.Cargo,  font=('arial', 20, 'bold'))
+        cargoOptions.grid(row=4,column=1,padx=5,sticky=E)
+        cargoOptions.set("Escolha um Cargo")
+        #txtCargo = Entry(self,textvariable=root.Cargo,font=('arial',30,'bold'),bg="white",fg="gray",justify=LEFT).grid(row=4,column=1,sticky=W,padx=5,columnspan=2)
+        #cargoOptions.pack(padx=5, pady=5)
 
-        btnSend = Button(self,text='Atualizar Dados',command=confirmarAtt,**self.root.btn_style).grid(row=5,column=1,padx=5,pady=9,sticky=W)
 
-        btnNew = Button(self,text='Cadastrar Novo Membro',command=novoMembro,**self.root.btn_style).grid(row=5,column=2,padx=5,sticky=W)
+        btnSend = Button(self,text='Atualizar Dados',command=confirmarAtt,**self.root.btn_style).grid(row=6,column=1,padx=5,pady=9,sticky=W)
+
+        btnNew = Button(self,text='Cadastrar Novo Membro',command=novoMembro,**self.root.btn_style).grid(row=6,column=2,padx=5,sticky=W)
 
 
 class FrameLogin(Frame):
