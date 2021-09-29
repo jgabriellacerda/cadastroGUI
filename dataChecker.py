@@ -5,7 +5,7 @@ dateRegex = r'[0-9]{2}/[0-9]{2}/[0-9]{4}'
 def checkEmail(email):
     if re.fullmatch(emailRegex, email):
         return True
-    return False;
+    return False
 
 def checkName(name):
     if len(name):

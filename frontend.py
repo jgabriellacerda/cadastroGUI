@@ -21,6 +21,8 @@ class MyRoot(Tk):
         self.Cargo = StringVar()
         #self.Cargo = ttk.combobox(
 
+        self.content_list = []
+
         self.title("CADASTRO MEMBROS")
         #root.geometry('1352x750+0+0')
         self.resizable(False,False)
@@ -39,36 +41,34 @@ class MyRoot(Tk):
         self.frameCadastro = FrameCadastro(master=self.mainFrame, root=self, bg = "red", bd=5, relief=RIDGE, **kwargs)
         self.frameCadastro.grid(row=2,column=0,sticky=E+W+N+S)
         # self.frameCadastro.grid_remove()
+        self.content_list.append(self.frameCadastro)
 
-        self.frameHorario = Frame(self.mainFrame, bg = "red", bd=5, relief=RIDGE)
+        self.frameHorario = FrameHorario(self.mainFrame, bg = "red", bd=5, relief=RIDGE)
         self.frameHorario.grid(row=2,column=0,sticky=E+W+N+S)
         self.frameHorario.grid_remove()
+        self.content_list.append(self.frameHorario)
 
         self.frameLogin = FrameLogin(self.mainFrame, self, bg = "red", bd=5, relief=RIDGE)
         self.frameLogin.grid(row=2,column=0,sticky=E+W+N+S)
         self.frameLogin.grid_remove()
+        self.content_list.append(self.frameLogin)
 
         self.frameRodape = FrameRodape(self.mainFrame, self, bg = "red", bd=5, relief=RIDGE)
         self.frameRodape.grid(row=3,column=0,sticky=W+E)
 
-
+        
         #run:
-        self.mostrarLogin()
+        self.updateContent('Login')
 
-    def mostrarCadastro(self):
-        self.frameHorario.grid_remove()
-        self.frameCadastro.grid()
-        self.frameLogin.grid_remove()
+    def updateContent(self,frame_name):
+        for frame in self.content_list:
+            if frame.name == frame_name:
+                frame.grid()
+            else:
+                frame.grid_remove()
 
-    def mostrarHorarios(self):
-        self.frameHorario.grid()
-        self.frameCadastro.grid_remove()
-        self.frameLogin.grid_remove()
-
-    def mostrarLogin(self):
-        self.frameLogin.grid()
-        self.frameCadastro.grid_remove()
-        self.frameHorario.grid_remove()
+    def show_buttons(self):
+        self.frameMenu.show_buttons()
 
 
 class FrameLogo(Frame):
@@ -87,10 +87,21 @@ class FrameMenu(Frame):
         super().__init__(frame, **kwargs)
 
         self.root = root
-        self.btnCadastro = Button(self,text='Cadastro',command=root.mostrarCadastro,**self.root.btn_style).grid(row=0,column=0)
-        self.btnHorarios = Button(self,text='Horários',command=root.mostrarHorarios,**self.root.btn_style).grid(row=0,column=1)
-        self.btnLogin = Button(self,text='Login',command=root.mostrarLogin,**self.root.btn_style).grid(row=0,column=2,sticky=E)
+        self.btnCadastro = Button(self,text='Cadastro',command= lambda: root.updateContent('Cadastro'),**self.root.btn_style)
+        self.btnCadastro.grid(row=0,column=0)
+        self.btnHorarios = Button(self,text='Horários',command= lambda: root.updateContent('Horario'),**self.root.btn_style)
+        self.btnHorarios.grid(row=0,column=1)
+        self.btnLogin = Button(self,text='Login',command= lambda: root.updateContent('Login'),**self.root.btn_style)
+        self.btnLogin.grid(row=0,column=2,sticky=E)
 
+        self.btnCadastro.grid_remove()
+        self.btnHorarios.grid_remove()
+    
+    def show_buttons(self):
+        self.btnCadastro.grid()
+        self.btnHorarios.grid()
+        self.btnLogin.grid_remove()
+        
 
 class FrameCadastro(Frame):
     def __init__(self, master, root, **kwargs):
@@ -101,6 +112,8 @@ class FrameCadastro(Frame):
         novoMembro = kwargs.pop('funcNovoMembro')
 
         super().__init__(master, **kwargs)
+
+        self.name = 'Cadastro'
 
         frameID = Frame(self, bg = "red", relief=RIDGE)
         frameID.grid(row=0,column=1,columnspan=2)
@@ -126,16 +139,20 @@ class FrameCadastro(Frame):
         frameCargo = Frame(self, bg = "red", bd=0, relief=RIDGE)
         frameCargo.grid(row=4,column=1,sticky=W,columnspan=2)
         lblCargo = Label(self,text='Cargo:',**self.root.lbl_style,justify=RIGHT).grid(row=4,column=0,sticky=E)
-        cargoOptions = ttk.Combobox(frameCargo, values=['Membro', 'Coordenador', 'Gerente'], textvariable=root.Cargo,  font=('arial', 30, 'bold'), state='readonly')
+        cargoOptions = ttk.Combobox(frameCargo, values=['Membro', 'Coordenador', 'Gerente'], textvariable=root.Cargo, font=('arial', 30, 'bold'), state='readonly')
         cargoOptions.grid(row=4,column=1,padx=5,sticky=E)
         cargoOptions.current(0)
-        #txtCargo = Entry(self,textvariable=root.Cargo,font=('arial',30,'bold'),bg="white",fg="gray",justify=LEFT).grid(row=4,column=1,sticky=W,padx=5,columnspan=2)
-        #cargoOptions.pack(padx=5, pady=5)
-
 
         btnSend = Button(self,text='Atualizar Dados',command=confirmarAtt,**self.root.btn_style).grid(row=6,column=1,padx=5,pady=9,sticky=W)
 
         btnNew = Button(self,text='Cadastrar Novo Membro',command=novoMembro,**self.root.btn_style).grid(row=6,column=2,padx=5,sticky=W)
+
+
+class FrameHorario(Frame):
+    def __init__(self, master, **kwargs):
+        super().__init__(master, **kwargs)
+
+        self.name = 'Horario'
 
 
 class FrameLogin(Frame):
@@ -146,6 +163,8 @@ class FrameLogin(Frame):
         self.user = StringVar()
         self.password = StringVar()
         self.phone = StringVar()
+
+        self.name = 'Login'
 
         email = 'gabriel.lacerda@engenharia.ufjf.br'
         password = '654321'
@@ -174,7 +193,8 @@ class FrameLogin(Frame):
 
     def entrar(self):
         if self.root.app.firebase_con.login(self.user.get(), self.password.get()):
-            self.root.mostrarCadastro()
+            self.root.show_buttons()
+            self.root.updateContent('Cadastro')
         else:
             messagebox.showinfo(self.root.Nome.get(), 'Usuário ou senha inválidos')
         print("Entrar")
