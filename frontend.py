@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
 import time
 from PIL import Image, ImageTk
 
@@ -50,6 +51,10 @@ class MyRoot(Tk):
         self.frameRodape = FrameRodape(self.mainFrame, self, bg = "red", bd=5, relief=RIDGE)
         self.frameRodape.grid(row=3,column=0,sticky=W+E)
 
+
+        #run:
+        self.mostrarLogin()
+
     def mostrarCadastro(self):
         self.frameHorario.grid_remove()
         self.frameCadastro.grid()
@@ -75,7 +80,6 @@ class FrameLogo(Frame):
         load = load.resize((round(140/height*width) , round(140)))
         self.logo = ImageTk.PhotoImage(load)
         img = Label(self, image=self.logo, bg='red').grid(row=0, column=0, padx=202, columnspan=2, sticky=W+E)
-
 
 
 class FrameMenu(Frame):
@@ -122,9 +126,9 @@ class FrameCadastro(Frame):
         frameCargo = Frame(self, bg = "red", bd=0, relief=RIDGE)
         frameCargo.grid(row=4,column=1,sticky=W,columnspan=2)
         lblCargo = Label(self,text='Cargo:',**self.root.lbl_style,justify=RIGHT).grid(row=4,column=0,sticky=E)
-        cargoOptions = ttk.Combobox(frameCargo, values=['Membro', 'Coordenador', 'Gerente'], textvariable=root.Cargo,  font=('arial', 20, 'bold'))
+        cargoOptions = ttk.Combobox(frameCargo, values=['Membro', 'Coordenador', 'Gerente'], textvariable=root.Cargo,  font=('arial', 30, 'bold'), state='readonly')
         cargoOptions.grid(row=4,column=1,padx=5,sticky=E)
-        cargoOptions.set("Escolha um Cargo")
+        cargoOptions.current(0)
         #txtCargo = Entry(self,textvariable=root.Cargo,font=('arial',30,'bold'),bg="white",fg="gray",justify=LEFT).grid(row=4,column=1,sticky=W,padx=5,columnspan=2)
         #cargoOptions.pack(padx=5, pady=5)
 
@@ -162,11 +166,17 @@ class FrameLogin(Frame):
         btnSearch = Button(frameBtns,text='Nova Conta',command=self.novaConta,pady=1,**self.root.btn_style,justify=LEFT).grid(row=0,column=1,padx=5,sticky=W)
 
     def novaConta(self):
-        self.root.app.firebase_con.signup(self.user.get(), self.password.get(), self.phone.get())
+        if self.root.app.firebase_con.signup(self.user.get(), self.password.get(), self.phone.get()):
+            self.root.mostrarCadastro()
+        else:
+            messagebox.showinfo(self.root.Nome.get(), 'Usuário ou senha inválidos')
         print("Nova Conta")
 
     def entrar(self):
-        self.root.app.firebase_con.login(self.user.get(), self.password.get())
+        if self.root.app.firebase_con.login(self.user.get(), self.password.get()):
+            self.root.mostrarCadastro()
+        else:
+            messagebox.showinfo(self.root.Nome.get(), 'Usuário ou senha inválidos')
         print("Entrar")
 
 class FrameRodape(Frame):
