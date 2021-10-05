@@ -27,13 +27,13 @@ class FirebaseConnection():
         # self._login = self.login(login['email'], login['password'])
         self._login = {}
 
-        self.my_stream = self._db.child('testebancodedados-56c27').child('Cadastro').stream(self.listener)
 
     
     def listener(self,event):
-        print(event.event_type)  # can be 'put' or 'patch'
-        print(event.path)  # relative to the reference, it seems
-        print(event.data)  # new data at /reference/event.path. None if deleted
+        # print(event)
+        print(event['event'])  # can be 'put' or 'patch'
+        print(event['path'])  # relative to the reference, it seems
+        print(event['data'])  # new data at /reference/event.path. None if deleted
 
 
     def signup(self,email,password,phone_number):
@@ -46,7 +46,9 @@ class FirebaseConnection():
     def login(self,email,password):
         try:
             self._login = self._auth.sign_in_with_email_and_password(email, password)
-            # print(login)
+
+            # self.my_stream = self._db.child('testebancodedados-56c27').child('Cadastro').stream(self.listener,token=self._login['idToken'])
+
             return self._login
         except Exception as e:
             print("Erro no login: ",e.args)
