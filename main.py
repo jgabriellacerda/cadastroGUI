@@ -26,6 +26,9 @@ class MyApp():
         self.strDias = ['Segunda','Terça','Quarta','Quinta','Sexta']
         self.strHoras = [str(x+7)+"h" for x in range(self.nHorarios)]
 
+        self.var_keys = ['nome', 'email', 'dataNascimento', 'cargo', 'categoria_area', 'dataIngresso',
+                         'cidadeOrigem', 'curso', 'previsaoConclusao', 'cidadeAtual', 'tamCamisa', 'celular']
+
         self.database_type = 'firebase'
 
         self.sql_db = SQL_DB_Handler(self.strDias, self.strHoras)
@@ -50,28 +53,29 @@ class MyApp():
                 self.btnMtxHorarios[i][j] = Button(self.root.frameHorario,width=10,command=lambda x1=i,y1=j: self.alternarBotao(x1,y1),text="Disponível",bg='pale green',font=('arial',10,'bold'),fg="gray25")
                 self.btnMtxHorarios[i][j].grid(row=i+1,column=j+1,sticky=W+E+N+S)
 
-        frameComparar = Frame(self.root.mainFrame, bg = "red", bd=5, relief=RIDGE)
+        frameComparar = Frame(self.root.mainFrame, bg="red", bd=5, relief=RIDGE)
         frameComparar.grid(row=2,column=0,sticky=E+W+N+S)
         frameComparar.grid_remove()
 
 
     def novoMembro(self):
-        data = {
-            'Nome': self.root.Nome.get(),
-            'EMail': self.root.EMail.get(),
-            'DataNascimento': self.root.diaNasc.get()+"/"+self.root.mesNasc.get()+"/"+self.root.anoNasc.get(),
-            'Cargo': self.root.Cargo.get()
-        }
-        if not dataChecker.checkDate(data['DataNascimento']):
+        data = {}
+        for var_key in self.var_keys:
+            if var_key == 'dataNascimento':
+                data[var_key] = f"{self.root.dict_vars[var_key][0].get()}/{self.root.dict_vars[var_key][1].get()}/{self.root.dict_vars[var_key][2].get()}"
+            else:
+                data[var_key] = self.root.dict_vars[var_key].get()
+
+        if not dataChecker.checkDate(data['dataNascimento']):
             messagebox.showinfo(self.root.Nome.get(), 'Data de nascimento inválida!')
             return
-        elif not dataChecker.checkEmail(data['EMail']):
+        elif not dataChecker.checkEmail(data['email']):
             messagebox.showinfo(self.root.Nome.get(), 'E-mail inválido!')
             return
-        elif not dataChecker.checkName(data['Nome']):
+        elif not dataChecker.checkName(data['nome']):
             messagebox.showinfo(self.root.Nome.get(), 'Nome inválido!')
             return
-        elif not dataChecker.checkCargo(data['Cargo']):
+        elif not dataChecker.checkCargo(data['cargo']):
             messagebox.showinfo(self.root.Nome.get(), 'Cargo inválido!')
             return
         if self.database_type == 'firebase':
@@ -89,18 +93,20 @@ class MyApp():
             dados = self.firebase_con.get_data(self.root.ID.get())
             if bool(dados):
                 print("Dados buscados:",dados)
-                self.root.Nome.set(dados['Nome'])
-                self.root.EMail.set(dados['EMail'])
-                self.root.Cargo.set(dados['Cargo'])
-                nasc = dados['DataNascimento']
-                self.root.diaNasc.set(nasc[0]+nasc[1])
-                self.root.mesNasc.set(nasc[3]+nasc[4])
-                self.root.anoNasc.set(nasc[6]+nasc[7]+nasc[8]+nasc[9])
+                for var_key in self.var_keys:
+                    if var_key == 'dataNascimento':
+                        dataNascimento = dados['dataNascimento'].split('/')
+                        print(dataNascimento)
+                        self.root.dict_vars[var_key][0].set(dataNascimento[0])
+                        self.root.dict_vars[var_key][1].set(dataNascimento[1])
+                        self.root.dict_vars[var_key][2].set(dataNascimento[2])
+                    else:
+                        self.root.dict_vars[var_key].set(dados[var_key])
         else:
             dados = self.sql_db.get_data(self.root.ID.get())
-            self.root.Nome.set(dados[1])
-            self.root.EMail.set(dados[3])
-            self.root.Cargo.set(dados[4])
+            self.root.nome.set(dados[1])
+            self.root.email.set(dados[3])
+            self.root.cargo.set(dados[4])
             self.root.diaNasc.set(dados[2].day)
             self.root.mesNasc.set(dados[2].month)
             self.root.anoNasc.set(dados[2].year)
@@ -115,7 +121,7 @@ class MyApp():
 
 
     def confirmarAtt(self):
-        resposta = messagebox.askquestion(self.root.Nome.get(),"Deseja mesmo atualizar os dados?")
+        resposta = messagebox.askquestion(self.root.nome.get(),"Deseja mesmo atualizar os dados?")
         if resposta == 'yes':
             self.atualizarDados()
             return
@@ -134,13 +140,12 @@ class MyApp():
 
 
     def atualizarDados(self):
-        data = {
-            'ID': self.root.ID.get(),
-            'Nome': self.root.Nome.get(),
-            'EMail': self.root.EMail.get(),
-            'DataNascimento': self.root.diaNasc.get() + "/" + self.root.mesNasc.get() + "/" + self.root.anoNasc.get(),
-            'Cargo': self.root.Cargo.get()
-        }
+        data = {}
+        for var_key in self.var_keys:
+            if var_key == 'dataNascimento':
+                data[var_key] = f"{self.root.dict_vars[var_key][0].get()}/{self.root.dict_vars[var_key][1].get()}/{self.root.dict_vars[var_key][2].get()}"
+            else:
+                data[var_key] = self.root.dict_vars[var_key].get()
         if self.database_type == 'firebase':
 
             self.firebase_con.update_data(self.root.ID.get(), data)

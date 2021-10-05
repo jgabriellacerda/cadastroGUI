@@ -1,0 +1,2 @@
+self.var_keys = ['nome', 'email', 'dataNascimento', 'cargo', 'categoria_area', 'cataIngresso',
+                         'cidadeOrigem', 'curso', 'previsaoConclusao', 'cidadeAtual', 'tamCamisa', 'celular']

@@ -10,16 +10,43 @@ class MyRoot(Tk):
 
         self.app = app
         self.btn_style = {'font': ('arial',18,'bold'), 'bg': "white", 'fg': "gray", 'relief':'groove'}
-        self.lbl_style = {'font': ('arial',30,'bold'), 'padx': 9, 'pady': 9, 'bg': "red", 'fg': "white"}
+        self.lbl_style = {'font': ('arial',18,'bold'), 'padx': 9, 'pady': 9, 'bg': "red", 'fg': "white"}
+        self.entry_style = {'font': ('arial',18,'bold'), 'bg': "white", 'fg': "gray",'justify': LEFT}
 
         self.ID = StringVar()
-        self.Nome = StringVar()
+        self.nome = StringVar()
         self.diaNasc = StringVar()
         self.mesNasc = StringVar()
         self.anoNasc = StringVar()
-        self.EMail = StringVar()
-        self.Cargo = StringVar()
+        self.email = StringVar()
+        self.cargo = StringVar()
+        self.categ_area = StringVar()
+        self.dataIngresso = StringVar()
+        self.dataIngresso.set("DD/MM/AAAA")
+        self.cidadeOrigem = StringVar()
+        self.curso = StringVar()
+        self.previsaoConclusao = StringVar()
+        self.previsaoConclusao.set("MM/AAAA")
+        self.cidade = StringVar()
+        self.tamCamisa = StringVar()
+        self.celular = StringVar()
+        self.celular.set("(00)90000-0000")
         #self.Cargo = ttk.combobox(
+
+        self.dict_vars = {
+            'nome': self.nome,
+            'email': self.email,
+            'dataNascimento': [self.diaNasc, self.mesNasc, self.anoNasc],
+            'cargo': self.cargo,
+            'categoria_area': self.categ_area,
+            'dataIngresso': self.dataIngresso,
+            'cidadeOrigem': self.cidadeOrigem,
+            'curso': self.curso,
+            'previsaoConclusao': self.previsaoConclusao,
+            'cidadeAtual': self.cidade,
+            'tamCamisa': self.tamCamisa,
+            'celular': self.celular
+        }
 
         self.content_list = []
 
@@ -116,36 +143,62 @@ class FrameCadastro(Frame):
         self.name = 'Cadastro'
 
         frameID = Frame(self, bg = "red", relief=RIDGE)
-        frameID.grid(row=0,column=1,columnspan=2)
+        frameID.grid(row=0,column=1,columnspan=2,sticky=W+E)
         lblID = Label(self,text='ID:',**self.root.lbl_style,justify=RIGHT).grid(row=0,column=0,sticky=E)
-        txtID = Entry(frameID,textvariable=root.ID,font=('arial',30,'bold'),bg="white",fg="gray",justify=LEFT).grid(row=0,column=0,padx=5,sticky=W+E)
+        txtID = Entry(frameID,textvariable=root.ID,**self.root.entry_style).grid(row=0,column=0,padx=5,sticky=W)
         btnSearch = Button(frameID,text='Buscar',command=buscarDados,pady=1,**self.root.btn_style,justify=LEFT).grid(row=0,column=1,padx=5,sticky=W)
 
-        lblNome = Label(self,text='Nome:',**self.root.lbl_style,justify=RIGHT).grid(row=1,column=0,sticky=E)
-        txtNome = Entry(self,textvariable=root.Nome,font=('arial',30,'bold'),bg="white",fg="gray",justify=LEFT).grid(row=1,column=1,padx=5,sticky=W+E,columnspan=2)
+        Label(self,text='Nome:',**self.root.lbl_style,justify=RIGHT).grid(row=1,column=0,sticky=E)
+        Entry(self,textvariable=root.nome,**self.root.entry_style).grid(row=1,column=1,padx=5,sticky=W+E)
 
         frameNasc = Frame(self, bg = "red", bd=0, relief=RIDGE)
-        frameNasc.grid(row=2,column=1,sticky=W,columnspan=2)
+        frameNasc.grid(row=2,column=1,sticky=W)
         lblNasc = Label(self,text='Nascimento:',**self.root.lbl_style,justify=RIGHT).grid(row=2,column=0,sticky=E)
-        txtNasc1 = Entry(frameNasc,width=2,textvariable=root.diaNasc,font=('arial',30,'bold'),bg="white",fg="gray",justify=LEFT).grid(row=2,column=1,padx=5,sticky=E)
+        txtNasc1 = Entry(frameNasc,width=2,textvariable=root.diaNasc,**self.root.entry_style).grid(row=2,column=1,padx=5,sticky=E)
         lblBarra1 = Label(frameNasc,text='/',font=('arial',30,'bold'),bg="red",fg="white",justify=RIGHT).grid(row=2,column=2,padx=5)
-        txtNasc2 = Entry(frameNasc,width=2,textvariable=root.mesNasc,font=('arial',30,'bold'),bg="white",fg="gray",justify=LEFT).grid(row=2,column=3,padx=5)
+        txtNasc2 = Entry(frameNasc,width=2,textvariable=root.mesNasc,**self.root.entry_style).grid(row=2,column=3,padx=5)
         lblBarra2 = Label(frameNasc,text='/',font=('arial',30,'bold'),bg="red",fg="white",justify=RIGHT).grid(row=2,column=4,padx=5)
-        txtNasc3 = Entry(frameNasc,width=4,textvariable=root.anoNasc,font=('arial',30,'bold'),bg="white",fg="gray",justify=LEFT).grid(row=2,column=5,padx=5)
+        txtNasc3 = Entry(frameNasc,width=4,textvariable=root.anoNasc,**self.root.entry_style).grid(row=2,column=5,padx=5)
 
         lblEMail = Label(self,text='E-mail:',**self.root.lbl_style,justify=RIGHT).grid(row=3,column=0,sticky=E)
-        txtEMail = Entry(self,textvariable=root.EMail,font=('arial',30,'bold'),bg="white",fg="gray",justify=LEFT).grid(row=3,column=1,sticky=E+W,padx=5,columnspan=2)
+        txtEMail = Entry(self,textvariable=root.email,**self.root.entry_style).grid(row=3,column=1,sticky=E+W,padx=5)
 
         frameCargo = Frame(self, bg = "red", bd=0, relief=RIDGE)
-        frameCargo.grid(row=4,column=1,sticky=W,columnspan=2)
+        frameCargo.grid(row=4,column=1,sticky=W)
         lblCargo = Label(self,text='Cargo:',**self.root.lbl_style,justify=RIGHT).grid(row=4,column=0,sticky=E)
-        cargoOptions = ttk.Combobox(frameCargo, values=['Membro', 'Coordenador', 'Gerente'], textvariable=root.Cargo, font=('arial', 30, 'bold'), state='readonly')
+        cargoOptions = ttk.Combobox(frameCargo, values=['Membro', 'Coordenador', 'Gerente'], textvariable=root.cargo, font=('arial', 18, 'bold'), state='readonly')
         cargoOptions.grid(row=4,column=1,padx=5,sticky=E)
         cargoOptions.current(0)
+                
+        Label(self,text='Celular:',**self.root.lbl_style,justify=RIGHT).grid(row=5,column=0,sticky=E)
+        Entry(self,textvariable=root.celular,**self.root.entry_style).grid(row=5,column=1,padx=5,sticky=W+E)
 
-        btnSend = Button(self,text='Atualizar Dados',command=confirmarAtt,**self.root.btn_style).grid(row=6,column=1,padx=5,pady=9,sticky=W)
+        Label(self,text='Tamanho da camisa:',**self.root.lbl_style,justify=RIGHT).grid(row=6,column=0,sticky=E)
+        tamOptions = ttk.Combobox(self, values=['PP', 'P', 'M', 'G', 'GG'], textvariable=root.tamCamisa, font=('arial', 18, 'bold'), state='readonly')
+        tamOptions.grid(row=6,column=1,padx=5,sticky=E)
+        tamOptions.current(0)
 
-        btnNew = Button(self,text='Cadastrar Novo Membro',command=novoMembro,**self.root.btn_style).grid(row=6,column=2,padx=5,sticky=W)
+        Label(self,text='Cidade de Origem:',**self.root.lbl_style,justify=RIGHT).grid(row=1,column=2,sticky=E)
+        Entry(self,textvariable=root.cidadeOrigem,**self.root.entry_style).grid(row=1,column=3,padx=5,sticky=W+E)
+
+        Label(self,text='Categoria/Área:',**self.root.lbl_style,justify=RIGHT).grid(row=2,column=2,sticky=E)
+        Entry(self,textvariable=root.categ_area,**self.root.entry_style).grid(row=2,column=3,padx=5,sticky=W+E)
+
+        Label(self,text='Data de Ingresso:',**self.root.lbl_style,justify=RIGHT).grid(row=3,column=2,sticky=E)
+        Entry(self,textvariable=root.dataIngresso,**self.root.entry_style).grid(row=3,column=3,padx=5,sticky=W+E)
+
+        Label(self,text='Curso:',**self.root.lbl_style,justify=RIGHT).grid(row=4,column=2,sticky=E)
+        Entry(self,textvariable=root.curso,**self.root.entry_style).grid(row=4,column=3,padx=5,sticky=W+E)
+
+        Label(self,text='Previsão de Conclusão:',**self.root.lbl_style,justify=RIGHT).grid(row=5,column=2,sticky=E)
+        Entry(self,textvariable=root.previsaoConclusao,**self.root.entry_style).grid(row=5,column=3,padx=5,sticky=W+E)
+
+        Label(self,text='Cidade atual:',**self.root.lbl_style,justify=RIGHT).grid(row=6,column=2,sticky=E)
+        Entry(self,textvariable=root.cidade,**self.root.entry_style).grid(row=6,column=3,padx=5,sticky=W+E)
+
+        btnSend = Button(self,text='Atualizar Dados',command=confirmarAtt,**self.root.btn_style).grid(row=7,column=1,padx=5,pady=9,sticky=E)
+
+        btnNew = Button(self,text='Cadastrar Novo Membro',command=novoMembro,**self.root.btn_style).grid(row=7,column=2,padx=5,sticky=W)
 
 
 class FrameHorario(Frame):
@@ -173,11 +226,11 @@ class FrameLogin(Frame):
         self.password.set(password)
 
         lblID = Label(self,text='Usuário:',**self.root.lbl_style,justify=RIGHT).grid(row=1,column=0,sticky=E)
-        txtID = Entry(self,textvariable=self.user,font=('arial',30,'bold'),bg="white",fg="gray",justify=LEFT).grid(row=1,column=1,padx=5,sticky=W+E)
+        txtID = Entry(self,textvariable=self.user,**self.root.entry_style).grid(row=1,column=1,padx=5,sticky=W+E)
         lblID = Label(self,text='Senha:',**self.root.lbl_style,justify=RIGHT).grid(row=2,column=0,sticky=E)
-        txtID = Entry(self,textvariable=self.password,show="*",font=('arial',30,'bold'),bg="white",fg="gray",justify=LEFT).grid(row=2,column=1,padx=5,sticky=W+E)
+        txtID = Entry(self,textvariable=self.password,show="*",**self.root.entry_style).grid(row=2,column=1,padx=5,sticky=W+E)
         # lblID = Label(self,text='Celular:',**self.root.lbl_style,justify=RIGHT).grid(row=3,column=0,sticky=E)
-        # txtID = Entry(self,textvariable=self.phone,font=('arial',30,'bold'),bg="white",fg="gray",justify=LEFT).grid(row=3,column=1,padx=5,sticky=W+E)
+        # txtID = Entry(self,textvariable=self.phone,**self.root.entry_style).grid(row=3,column=1,padx=5,sticky=W+E)
 
         frameBtns = Frame(self, bg = "red", bd=0, relief=RIDGE)
         frameBtns.grid(row=4,column=1,sticky=W)
@@ -211,10 +264,10 @@ class FrameRodape(Frame):
         self.data.set(time.strftime("%d/%m/%Y"))
         self.hora.set(time.strftime("%H:%M:%S"))
 
-        self.lblData = Label(self,textvariable=self.data,font=('arial',15,'bold'),pady=5,bg="red",fg="white").grid(row=0,column=0,sticky=W)
-        self.btnExit = Button(self,text='Sair',command=root.destroy,**self.root.btn_style).grid(row=0,column=1,padx=286,sticky=W+E)
+        self.lblData = Label(self,textvariable=self.data,font=('arial',15,'bold'),pady=5,bg="red",fg="white",justify=LEFT).grid(row=0,column=0,sticky=W+E)
+        self.btnExit = Button(self,text='Sair',command=root.destroy,**self.root.btn_style).grid(row=0,column=1,padx=286,columnspan=2,sticky=W+E)
         #lblSpace = Label(frameRodape,text=' ',font=('arial',15,'bold'),padx=315,bg="red",fg="white").grid(row=0,column=1)
-        self.lblHora = Label(self,textvariable=self.hora,font=('arial',15,'bold'),pady=5,bg="red",fg="white").grid(row=0,column=2,sticky=E)
+        self.lblHora = Label(self,textvariable=self.hora,font=('arial',15,'bold'),pady=5,bg="red",fg="white",justify=RIGHT).grid(row=0,column=3,sticky=W+E)
 
         self.attDataHora()
 

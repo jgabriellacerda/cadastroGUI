@@ -58,7 +58,7 @@ class FirebaseConnection():
     def get_data(self,id):
         if 'idToken' in self._login.keys():
             try:
-                data = self._db.child('testebancodedados-56c27').child('Cadastro').child(id).get(self._login['idToken'])
+                data = self._db.child('cadastro').child(id).get(self._login['idToken'])
                 if data.val():
                     data = dict(data.val())
                     #print(data)
@@ -78,14 +78,14 @@ class FirebaseConnection():
         if 'idToken' in self._login.keys():
             # data = json.dumps(dado)
             print("Updated data: ",data)
-            data = self._db.child('testebancodedados-56c27').child('Cadastro').child(cod_att).update(data, self._login['idToken'])
+            data = self._db.child('cadastro').child(cod_att).update(data, self._login['idToken'])
         else:
             print("Não autorizado")
             return {}
 
 
     def get_people_keys(self):
-        keys = self._db.child('testebancodedados-56c27').child('Cadastro').shallow().get(self._login['idToken'])
+        keys = self._db.child('cadastro').shallow().get(self._login['idToken'])
         keys = map(int,keys.val())
         keys = list(keys)
         return keys
@@ -109,7 +109,7 @@ class FirebaseConnection():
 
     def get_id(self,user_code):
         if 'idToken' in self._login.keys():
-            data = self._db.child('testebancodedados-56c27').child('Cadastro').child(user_code).child('ID').get(self._login['idToken'])
+            data = self._db.child('cadastro').child(user_code).child('ID').get(self._login['idToken'])
             data = data.val()
             print("Data: ",data)
             return data
@@ -123,6 +123,6 @@ class FirebaseConnection():
         try:
             data_id = data['ID']
             print("Data: ",data)
-            self._db.child('testebancodedados-56c27').child('Cadastro').child(data_id).set(data,self._login['idToken'])
+            self._db.child('cadastro').child(data_id).set(data,self._login['idToken'])
         except Exception as e:
             print("Erro: ",e.args)
